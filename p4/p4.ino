@@ -1,3 +1,4 @@
+
 // Use only core 1 for demo purposes
 #if CONFIG_FREERTOS_UNICORE
 static const BaseType_t app_cpu = 0;
@@ -6,7 +7,7 @@ static const BaseType_t app_cpu = 1;
 #endif
 
 // Some string to print
-const char msg[] = "pakaya";
+const char msg[] = "My Neck";
 // Task handles
 
 static TaskHandle_t task_1 = NULL;
