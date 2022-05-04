@@ -1,4 +1,3 @@
-
 // Use only core 1 for demo purposes
 #if CONFIG_FREERTOS_UNICORE
 static const BaseType_t app_cpu = 0;
@@ -40,21 +39,21 @@ void startTask2(void *parameter) {
 
 void setup() {
    Serial.begin(115200);
-     xTaskCreatePinnedToCore(              //use xTaskCreate() in vanila freertos
+     xTaskCreatePinnedToCore(              
                           startTask1,    //function 
                           "Task1", //name of the task
                           1024,         //stack size(bytes)
                           NULL,         //parameter to pass to function
-                          1,            //task priority
+                          1,            //giving lower priority
                           NULL,         //task handle
                           app_cpu);     //run on 1 core for demo porpuse
 
-    xTaskCreatePinnedToCore(              //use xTaskCreate() in vanila freertos
+    xTaskCreatePinnedToCore(              
                           startTask2,    //function 
                           "Task2", //name of the task
                           1024,         //stack size(bytes)
                           NULL,         //parameter to pass to function
-                          1,            //task priority
+                          2,            //giving higher priority
                           NULL,         //task handle
                           app_cpu);     //run on 1 core for demo porpuse
 }
