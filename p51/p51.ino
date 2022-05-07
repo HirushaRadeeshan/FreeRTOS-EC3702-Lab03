@@ -30,7 +30,7 @@ void setup() {
   // Start the only other task
   xTaskCreatePinnedToCore(testTask,
                           "Test Task",
-                          1150,
+                          2048,
                           NULL,
                           1,
                           NULL,
