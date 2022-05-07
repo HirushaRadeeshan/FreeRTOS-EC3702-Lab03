@@ -1,53 +1,51 @@
-#if CONFIG_FREERTOS_UNICORE
-static const BaseType_t app_cpu = 0;
-#else
-static const BaseType_t app_cpu = 1;
-#endif
+// Task handles
+static TaskHandle_t task_A = NULL;
+static TaskHandle_t task_B = NULL;
 
+// TaskA
+void TaskA(void *parameters) {
 
-void C1Task(void *parameters) {
-
-  while(1){
-    Serial.print("I am Task A I am Running on CORE ");
-    Serial.println(xPortGetCoreID());
+  while(1){             //starting an infinity loop
+    Serial.print("I am Task A I am Running on CORE ");    //printing in serial monitor
+    Serial.println(xPortGetCoreID());         //printing Core ID on serial monitor
     
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS( 1000 ));    //giving a delay
   }  
 }
 
-void C2Task(void *parameters) {
+// TaskB
+void TaskB(void *parameters) {
 
-  while(1){
-    Serial.print("I am Task B I am Running on CORE ");
-    Serial.println(xPortGetCoreID());
+  while(1){             //starting an infinity loop
+    Serial.print("I am Task B I am Running on CORE ");    //printing in serial monitor
+    Serial.println(xPortGetCoreID());         //printing Core ID on serial monitor
     
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS( 1000 ));    //giving a delay
   }  
 }
 
 
 void setup() {
-  // put your setup code here, to run once:
 
   Serial.begin(115200);
 
   // Start task A
-  xTaskCreatePinnedToCore(C1Task,
-                          "Task A Core0",
-                          1024,
-                          NULL,
-                          1,
-                          NULL,
-                          0);
+  xTaskCreatePinnedToCore(TaskA,    //function
+                          "Task A Core0", //name of the task
+                          1024,         //stack size(bytes)
+                          NULL,         //parameter to pass to function
+                          1,            //giving lower priority
+                          &task_A,       //task handle
+                          0);           //Core ID
   
-  // Start task B
-  xTaskCreatePinnedToCore(C2Task,
-                          "Task B Core1",
-                          1024,
-                          NULL,
-                          1,
-                          NULL,
-                          1);
+  // Start task 2
+  xTaskCreatePinnedToCore(TaskB,    //function
+                          "Task B Core1", //name of the task
+                          1024,         //stack size(bytes)
+                          NULL,         //parameter to pass to function
+                          1,            //giving lower priority
+                          &task_B,       //task handle
+                          1);           //Core ID
   
   // Delete "setup and loop" task
   vTaskDelete(NULL);
